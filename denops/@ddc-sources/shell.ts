@@ -8,12 +8,18 @@ import { Denops, fn } from "https://deno.land/x/ddc_vim@v3.4.0/deps.ts";
 type Params = Record<never, never>;
 
 export class Source extends BaseSource<Params> {
-  override getCompletePosition(args: {
+  override isBytePos = true;
+
+  override async getCompletePosition(args: {
+    denops: Denops;
     context: Context;
   }): Promise<number> {
-    const matchPos = args.context.input.search(/\S+$/);
-    const completePos = matchPos !== null ? matchPos : -1;
-    return Promise.resolve(completePos);
+    const matchPos = await fn.match(
+      args.denops,
+      args.context.input,
+      "\\f\\+$",
+    ) as number;
+    return Promise.resolve(matchPos);
   }
 
   override async gather(args: {
@@ -36,7 +42,9 @@ export class Source extends BaseSource<Params> {
       //console.log(_);
     }
 
-    return results.map((word) => { return { word } });
+    return results.map((word) => {
+      return { word };
+    });
   }
 
   override params(): Params {
