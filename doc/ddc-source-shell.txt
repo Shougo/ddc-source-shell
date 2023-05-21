@@ -1,0 +1,42 @@
+*ddc-source-shell.txt*	shell completion for ddc.vim
+
+Author: Shougo <Shougo.Matsu at gmail.com>
+License: MIT license
+
+CONTENTS					*ddc-source-shell-contents*
+
+Introduction		|ddc-source-shell-introduction|
+Install			|ddc-source-shell-install|
+Examples		|ddc-source-shell-examples|
+
+
+==============================================================================
+INTRODUCTION				*ddc-source-shell-introduction*
+
+This source collects items from |getcompletion()|.
+It is useful for shell completion.
+
+
+==============================================================================
+INSTALL						*ddc-source-shell-install*
+
+Please install both "ddc.vim" and "denops.vim".
+
+https://github.com/Shougo/ddc.vim
+https://github.com/vim-denops/denops.vim
+
+
+==============================================================================
+EXAMPLES					*ddc-source-shell-examples*
+>
+	call ddc#custom#patch_global('sources', ['shell'])
+	
+	call ddc#custom#patch_global('sourceOptions', #{
+	\   shell: #{
+	\     mark: 'shell',
+	\   }
+	\ })
+<
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:noet:
