@@ -1,8 +1,10 @@
-import { type Context, type Item } from "jsr:@shougo/ddc-vim@~7.0.0/types";
-import { BaseSource } from "jsr:@shougo/ddc-vim@~7.0.0/source";
+import { type Context, type Item } from "jsr:@shougo/ddc-vim@~9.1.0/types";
+import { BaseSource } from "jsr:@shougo/ddc-vim@~9.1.0/source";
 
 import type { Denops } from "jsr:@denops/core@~7.0.0";
-import * as fn from "jsr:@denops/std@~7.1.1/function";
+import * as fn from "jsr:@denops/std@~7.4.0/function";
+import * as op from "jsr:@denops/std@~7.4.0/option";
+import * as vars from "jsr:@denops/std@~7.4.0/variable";
 
 type Params = Record<string, never>;
 
@@ -25,9 +27,20 @@ export class Source extends BaseSource<Params> {
     denops: Denops;
     context: Context;
   }): Promise<Item[]> {
-    const input = await fn.exists(args.denops, "*deol#get_input")
-      ? await args.denops.call("deol#get_input") as string
-      : args.context.input;
+    let input = args.context.input;
+    if (args.context.mode !== "c") {
+      const filetype = await op.filetype.getLocal(args.denops);
+      if (
+        filetype === "deol" && await fn.exists(args.denops, "*deol#get_input")
+      ) {
+        input = await args.denops.call("deol#get_input") as string;
+      }
+
+      const uiName = await vars.b.get(args.denops, "ddt_ui_name", "");
+      if (uiName.length > 0 && await fn.exists(args.denops, "*ddt#get_input")) {
+        input = await args.denops.call("ddt#get_input", uiName) as string;
+      }
+    }
 
     let results: string[] = [];
     try {
