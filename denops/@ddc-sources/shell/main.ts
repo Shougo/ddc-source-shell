@@ -1,10 +1,10 @@
-import { type Context, type Item } from "jsr:@shougo/ddc-vim@~9.1.0/types";
-import { BaseSource } from "jsr:@shougo/ddc-vim@~9.1.0/source";
+import type { Context, Item } from "@shougo/ddc-vim/types";
+import { BaseSource } from "@shougo/ddc-vim/source";
 
-import type { Denops } from "jsr:@denops/core@~7.0.0";
-import * as fn from "jsr:@denops/std@~7.4.0/function";
-import * as op from "jsr:@denops/std@~7.4.0/option";
-import * as vars from "jsr:@denops/std@~7.4.0/variable";
+import type { Denops } from "@denops/std";
+import * as fn from "@denops/std/function";
+import * as op from "@denops/std/option";
+import * as vars from "@denops/std/variable";
 
 type Params = Record<string, never>;
 
